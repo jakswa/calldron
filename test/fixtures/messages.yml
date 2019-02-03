@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyString
+  to: MyString
+  from: MyString
+  network_id: MyString
+
+two:
+  content: MyString
+  to: MyString
+  from: MyString
+  network_id: MyString

@@ -10,10 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_03_205021) do
+ActiveRecord::Schema.define(version: 2019_02_03_214716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "calls", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "duration"
+    t.integer "user_id"
+    t.boolean "outbound"
+    t.datetime "connected_at"
+    t.datetime "hangup_at"
+    t.string "to"
+    t.string "from"
+    t.string "network_id"
+    t.index ["network_id"], name: "index_calls_on_network_id", unique: true
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.boolean "outbound"
+    t.string "to"
+    t.string "from"
+    t.string "network_id"
+    t.string "content"
+    t.index ["network_id"], name: "index_messages_on_network_id", unique: true
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
