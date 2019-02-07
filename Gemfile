@@ -60,3 +60,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
+gem 'twilio-ruby', '~> 5.19.0'
