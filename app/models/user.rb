@@ -4,5 +4,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  store_accessor :config, :twilio_creds
+  def whitelisted?(from)
+    whitelist_disabled? ||
+      whitelist&.include?(from)
+  end
+
+  def whitelist_disabled?
+    forward_all_until &&
+      forward_all_until > Time.current 
+  end
 end
