@@ -15,7 +15,6 @@ class TwilioController < ApplicationController
     head 201
   end
 
-  # TODO: use this
   def outbound
     xml.Dial(
       strip(params[:To]),
@@ -35,6 +34,15 @@ class TwilioController < ApplicationController
   end
 
   def transcribe
+    head 201
+  end
+
+  def sms
+    Message.where(network_id: params[:MessageSid]).first_or_create!(
+      to: strip(params[:To]),
+      from: strip(params[:From]),
+      content: params[:Body]
+    )
     head 201
   end
 

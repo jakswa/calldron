@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   post 'twilio/outbound_status'
   post 'twilio/recording'
   post 'twilio/transcribe'
+  post 'twilio/sms'
 
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
