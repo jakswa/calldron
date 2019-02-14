@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'dashboard', to: 'dashboard#index'
   default_url_options host: ENV['APP_DOMAIN'], protocol: 'https'
 
   post 'twilio/route'

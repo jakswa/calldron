@@ -1,0 +1,25 @@
+<h1>Dashboard#index</h1>
+
+<h2>Messages</h2>
+<ul>
+  <% @messages.each do |message| %>
+    <li>
+      from: <%= message.from %><br/>
+      to: <%= message.to %><br/>
+      <%= message.content %>
+    </li>
+  <% end %>
+</ul>
+
+<h2>Calls</h2>
+<ul>
+  <% @calls.each do |call| %>
+    <li>
+      created: <%= call.created_at %><br/>
+      from: <%= call.from %><br/>
+      duration: <%= call.duration %><br/>
+      direction: <%= call.outbound ? 'outbound' : 'inbound' %>
+    </li>
+  <% end %>
+</ul>
+
