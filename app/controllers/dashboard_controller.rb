@@ -10,6 +10,6 @@ class DashboardController < ApplicationController
   private
 
   def ensure_set_up
-    redirect_to(new_account_path) unless current_user.account
+    redirect_to(edit_account_path) unless current_user.account
   end
 end

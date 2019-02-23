@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_23_022013) do
+ActiveRecord::Schema.define(version: 2019_02_23_041019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2019_02_23_022013) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "recording_total"
+    t.string "whitelist", array: true
   end
 
   create_table "calls", force: :cascade do |t|
@@ -35,6 +36,7 @@ ActiveRecord::Schema.define(version: 2019_02_23_022013) do
     t.string "from"
     t.string "network_id"
     t.text "transcription"
+    t.integer "account_id"
     t.index ["network_id"], name: "index_calls_on_network_id", unique: true
   end
 
@@ -47,6 +49,7 @@ ActiveRecord::Schema.define(version: 2019_02_23_022013) do
     t.string "from"
     t.string "network_id"
     t.string "content"
+    t.integer "account_id"
     t.index ["network_id"], name: "index_messages_on_network_id", unique: true
   end
 

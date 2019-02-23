@@ -7,8 +7,11 @@ class AccountsController < ApplicationController
 
   def update
     current_user.account ||= current_user.build_account
-    current_user.account.update!(account_params)
-    current_user.save! if current_user.changed?
+    current_user.account.assign_attributes(account_params)
+    Account.transaction do
+      current_user.account.save!
+      current_user.save!
+    end
     redirect_to edit_account_path, flash: { notice: 'Success!' }
   end
 
@@ -16,7 +19,8 @@ class AccountsController < ApplicationController
 
   def account_params
     params.require(:account).permit(
-      :twilio_token, :twilio_sid
+      :twilio_token, :twilio_sid,
+      whitelist: []
     )
   end
 end

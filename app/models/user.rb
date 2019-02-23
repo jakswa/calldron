@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  belongs_to :account
+  belongs_to :account, optional: true
   has_many :numbers, through: :account
 
   def whitelisted?(from)
@@ -14,6 +14,6 @@ class User < ApplicationRecord
 
   def whitelist_disabled?
     forward_all_until &&
-      forward_all_until > Time.current 
+      forward_all_until > Time.current
   end
 end

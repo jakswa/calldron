@@ -4,13 +4,32 @@
 <%= form_for @account, url: account_path, method: :put do |f| %>
   <%= f.label :twilio_sid %> <%= f.text_field :twilio_sid %>
   <%= f.label :twilio_token %> <%= f.text_field :twilio_token %>
+
+  <h3>Whitelist:</h3>
+  <input-list
+    input-name="account[whitelist][]"
+    <% @account.whitelist&.each_with_index do |number, i| %>
+      <%= "list-item-#{i}=#{number}" %>
+    <% end %>
+    >
+  </input-list>
   <%= f.submit %>
 <% end %>
 
+<h3>Twilio Numbers</h3>
 <ul>
-  <% @account.numbers.each do |number| %>
+  <% @account.twilio_api.incoming_phone_numbers.each do |number| %>
     <li>
-      <%= number.to_json %>
+      <%= number.phone_number %>
     </li>
   <% end %>
 </ul>
+
+<h3>TwiML Apps</h3>
+<% @account.twilio_api.applications.each do |app| %>
+  <ul>
+    <li>Name: <%= app.friendly_name %></li>
+    <li>Voice: <%= app.voice_url %></li>
+    <li>SMS: <%= app.sms_url %></li>
+  </ul>
+<% end %>
