@@ -1,0 +1,16 @@
+<h1>Accounts#show</h1>
+<p>Find me in app/views/accounts/show.html.erb</p>
+
+<%= form_for @account, url: account_path, method: :put do |f| %>
+  <%= f.label :twilio_sid %> <%= f.text_field :twilio_sid %>
+  <%= f.label :twilio_token %> <%= f.text_field :twilio_token %>
+  <%= f.submit %>
+<% end %>
+
+<ul>
+  <% @account.numbers.each do |number| %>
+    <li>
+      <%= number.to_json %>
+    </li>
+  <% end %>
+</ul>

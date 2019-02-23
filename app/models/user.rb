@@ -4,6 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  belongs_to :account
+  has_many :numbers, through: :account
+
   def whitelisted?(from)
     whitelist_disabled? ||
       whitelist&.include?(from)

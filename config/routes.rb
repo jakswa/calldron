@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resource :account
+
   get 'dashboard', to: 'dashboard#index'
   default_url_options host: ENV['APP_DOMAIN'], protocol: 'https'
 
