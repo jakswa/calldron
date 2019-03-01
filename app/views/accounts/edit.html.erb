@@ -1,5 +1,5 @@
-<h1>Accounts#show</h1>
-<p>Find me in app/views/accounts/show.html.erb</p>
+<h1>Accounts#edit</h1>
+<p>Find me in app/views/accounts/edit.html.erb</p>
 
 <%= form_for @account, url: account_path, method: :put do |f| %>
   <%= f.label :twilio_sid %> <%= f.text_field :twilio_sid %>
@@ -18,18 +18,27 @@
 
 <h3>Twilio Numbers</h3>
 <ul>
-  <% @account.twilio_api.incoming_phone_numbers.each do |number| %>
+  <% @numbers.each do |number| %>
     <li>
       <%= number.phone_number %>
+      <%= number.voice_application_sid %>
     </li>
   <% end %>
 </ul>
 
 <h3>TwiML Apps</h3>
-<% @account.twilio_api.applications.each do |app| %>
+<% @twiml.each do |app| %>
   <ul>
     <li>Name: <%= app.friendly_name %></li>
+    <li>Sid: <%= app.sid %></li>
     <li>Voice: <%= app.voice_url %></li>
     <li>SMS: <%= app.sms_url %></li>
   </ul>
 <% end %>
+
+<h3>SIP Users</h3>
+<ul>
+<% sip_addresses.each do |address| %>
+  <li><%= address %></li>
+<% end %>
+</ul>
