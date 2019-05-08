@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post 'twilio/sms'
 
   devise_for :users
+  post 'message/:network_id/reply', to: 'messages#reply', as: 'message_reply'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'robots#health_check'
   get 'robots/health_check'

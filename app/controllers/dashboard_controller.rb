@@ -3,8 +3,8 @@ class DashboardController < ApplicationController
   before_action :ensure_set_up
 
   def index
-    @calls = Call.order(created_at: :desc).take(5)
-    @messages = Message.order(created_at: :desc).take(5)
+    @calls = current_user.account.calls.order(created_at: :desc).take(5)
+    @messages = current_user.account.messages.order(created_at: :desc).take(20)
   end
 
   private

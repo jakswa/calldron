@@ -2,11 +2,23 @@
 
 <h2>Messages</h2>
 <ul>
-  <% @messages.each do |message| %>
+  <% @messages.group_by(&:contact_number).each do |from, messages| %>
     <li>
-      from: <%= message.from %><br/>
-      to: <%= message.to %><br/>
-      <%= message.content %>
+      <%= from %>
+      <%= form_tag(message_reply_path(messages.last.network_id), style: 'display: inline;') do %>
+        <%= text_field_tag :content, nil, required: true, placeholder: 'text message' %>
+        <%= button_tag('send text', type: :submit) %>
+      <% end %>
+      <ul>
+        <% messages.each do |message| %>
+          <li>
+            <%= (message.outbound? ? '&#128228;' : '&#128229;').html_safe %>
+            <%= message.content %>
+            &mdash;
+            <em><%= time_ago_in_words message.created_at %> ago</em>
+          </li>
+        <% end %>
+      </ul>
     </li>
   <% end %>
 </ul>

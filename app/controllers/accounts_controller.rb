@@ -3,8 +3,6 @@ class AccountsController < ApplicationController
 
   def edit
     @account = current_user.account ||= Account.new
-    @numbers = @account.twilio_api.incoming_phone_numbers.list rescue []
-    @twiml = @numbers.present? ? @account.twilio_api.applications : []
   end
 
   def update
