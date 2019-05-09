@@ -1,6 +1,7 @@
 class SetupJob < ApplicationJob
   SIP_DOMAIN_NAME = 'calldron sip domain'.freeze
   CRED_LIST_NAME = 'calldron credential list'.freeze
+  TWIML_APP_NAME = 'calldron twiml app'.freeze
 
   include Rails.application.routes.url_helpers
 
@@ -19,6 +20,22 @@ class SetupJob < ApplicationJob
   private
 
   def setup_twiml_app
+    twiml_app = account.twilio_api.applications.list.find do |app|
+      app.friendly_name == TWIML_APP_NAME
+    end || create_twiml_app
+
+    account.twilio_api.incoming_phone_numbers.each do |number|
+      number.update(voice_application_sid: twiml_app.sid)
+    end
+  end
+
+  def create_twiml_app
+    twiml_app = account.twilio_api.applications.create(
+      friendly_name: TWIML_APP_NAME,
+      voice_url: twilio_route_url,
+      status_callback: twilio_status_url,
+      sms_url: twilio_sms_url
+    )
   end
 
   def setup_sip_domain
@@ -63,7 +80,7 @@ class SetupJob < ApplicationJob
   def create_credential_list
     list = account.twilio_api.sip.credential_lists
       .create(friendly_name: CRED_LIST_NAME)
-    
+
     username = credential_user.email.split('@').first
     password = SecureRandom.base64(12)
     credential_user.update(sip_password: password)
