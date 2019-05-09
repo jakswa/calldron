@@ -56,15 +56,11 @@ class TwilioController < ApplicationController
   end
 
   def handle_new_call
-    if whitelisted?
+    if account.whitelisted?(params[:From])
       dial_sip_user
     else
       xml.Reject
     end
-  end
-
-  def whitelisted?
-    user.whitelisted?(params[:From])
   end
 
   # really the only thing unique here is that we'll have duration set

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_09_000759) do
+ActiveRecord::Schema.define(version: 2019_05_09_040048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2019_05_09_000759) do
     t.datetime "updated_at", null: false
     t.integer "recording_total"
     t.string "whitelist", array: true
+    t.datetime "forward_all_until"
   end
 
   create_table "calls", force: :cascade do |t|
@@ -70,8 +71,6 @@ ActiveRecord::Schema.define(version: 2019_05_09_000759) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "config"
-    t.string "whitelist", array: true
-    t.datetime "forward_all_until"
     t.string "caller_id"
     t.integer "account_id"
     t.text "sip_password"

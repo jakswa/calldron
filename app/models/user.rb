@@ -6,14 +6,4 @@ class User < ApplicationRecord
 
   belongs_to :account, optional: true
   has_many :numbers, through: :account
-
-  def whitelisted?(from)
-    whitelist_disabled? ||
-      whitelist&.include?(from)
-  end
-
-  def whitelist_disabled?
-    forward_all_until &&
-      forward_all_until > Time.current
-  end
 end
