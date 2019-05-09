@@ -15,7 +15,7 @@ class ImportJob < ApplicationJob
   def import_numbers
     account.twilio_api.incoming_phone_numbers.each do |number|
       account.numbers.where(network_id: number.sid).first_or_create!(
-        number: number.phone_number,
+        number: number.phone_number.slice(1..-1),
         user: default_user
       )
     end

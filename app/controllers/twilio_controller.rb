@@ -18,7 +18,7 @@ class TwilioController < ApplicationController
   def outbound
     return caller_id_feedback unless outbound_caller_id
     xml.Dial(
-      strip(params[:To]),
+      stripped(:To),
       callerId: outbound_caller_id,
       answerOnBridge: true
     )
@@ -40,8 +40,8 @@ class TwilioController < ApplicationController
 
   def sms
     account.messages.where(network_id: params[:MessageSid]).first_or_create!(
-      to: strip(params[:To]),
-      from: strip(params[:From]),
+      to: stripped(:To),
+      from: stripped(:From),
       content: params[:Body]
     )
     head 201
@@ -49,15 +49,19 @@ class TwilioController < ApplicationController
 
   private
 
+  def stripped(param_key)
+    @stripped ||= {}
+    @stripped[param_key] ||= strip(params[param_key])
+  end
+
   def strip(param)
-    case param
-    when /^sip:/ then param.split(/[:@]/)[1]
-    else param.gsub(/\D/, '') 
-    end
+    return nil unless param
+    param = param.split(/[:@]/)[1] if param.start_with?('sip:')
+    param.gsub(/\D/, '')
   end
 
   def handle_new_call
-    if account.whitelisted?(params[:From])
+    if account.whitelisted?(stripped(:From))
       dial_sip_user
     else
       xml.Reject
@@ -67,8 +71,8 @@ class TwilioController < ApplicationController
   # really the only thing unique here is that we'll have duration set
   def finalize_call(outbound: nil)
     account.calls.where(network_id: params[:CallSid]).first_or_create!(
-      to: strip(params[:To]),
-      from: strip(params[:From]),
+      to: stripped(:To),
+      from: stripped(:From),
       outbound: outbound,
       duration: params[:CallDuration]
     )
@@ -122,7 +126,7 @@ class TwilioController < ApplicationController
   end
 
   def inbound_number
-    @inbound_number ||= Number.find_by!(number: params[:To])
+    @inbound_number ||= Number.find_by!(number: stripped(:To))
   end
 
   def inbound_user
