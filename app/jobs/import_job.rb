@@ -4,9 +4,20 @@ class ImportJob < ApplicationJob
     case type
     when 'calls' then import_calls
     when 'sms' then import_sms
+    when 'numbers' then import_numbers
     else
       import_calls
       import_sms
+      import_numbers
+    end
+  end
+
+  def import_numbers
+    account.twilio_api.incoming_phone_numbers.each do |number|
+      account.numbers.where(network_id: number.sid).first_or_create!(
+        number: number.phone_number,
+        user: default_user
+      )
     end
   end
 
@@ -41,6 +52,10 @@ class ImportJob < ApplicationJob
   end
 
   private
+
+  def default_user
+    @default_user ||= account.users.first!
+  end
 
   def account
     @account ||= Account.find(@account_id)

@@ -16,9 +16,10 @@ class TwilioController < ApplicationController
   end
 
   def outbound
+    return caller_id_feedback unless outbound_caller_id
     xml.Dial(
       strip(params[:To]),
-      callerId: user.caller_id,
+      callerId: outbound_caller_id,
       answerOnBridge: true
     )
     render xml: xml_response
@@ -89,7 +90,7 @@ class TwilioController < ApplicationController
   end
 
   def sip_user_address
-    sip_user = user.email.split('@').first
+    sip_user = inbound_user.email.split('@').first
     "sip:#{sip_user}@#{ENV['TWILIO_SIP_DOMAIN']}"
   end
 
@@ -102,8 +103,30 @@ class TwilioController < ApplicationController
     wrapper.target!
   end
 
-  def user
-    @user ||= account.users.first!
+  def outbound_user
+    return @outbound_user if defined?(@outbound_user)
+    from_user = params[:From].split(/[:@]/)[1]
+    @outbound_user = account.users
+      .where("email LIKE ?", "#{from_user}%").first!
+  end
+
+  def outbound_caller_id
+    outbound_user.caller_id ||
+      account.numbers.find_by(user_id: outbound_user.id)&.number
+  end
+
+  def caller_id_feedback
+    xml.Say("You must set your caller ID before dialing outbound. Goodbye.")
+    xml.Hangup
+    render xml: xml_response
+  end
+
+  def inbound_number
+    @inbound_number ||= Number.find_by!(number: params[:To])
+  end
+
+  def inbound_user
+    @user ||= inbound_number.user
   end
 
   def account
