@@ -28,7 +28,11 @@
   <% @calls.each do |call| %>
     <li>
       created: <%= call.created_at %><br/>
+      <% if call.outbound? %>
+      to: <%= call.to %><br/>
+      <% else %>
       from: <%= call.from %><br/>
+      <% end %>
       duration: <%= call.duration %><br/>
       direction: <%= call.outbound ? 'outbound' : 'inbound' %>
     </li>
