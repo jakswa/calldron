@@ -38,7 +38,7 @@ class TwilioController < ApplicationController
   end
 
   def sms
-    Message.where(network_id: params[:MessageSid]).first_or_create!(
+    account.messages.where(network_id: params[:MessageSid]).first_or_create!(
       to: strip(params[:To]),
       from: strip(params[:From]),
       content: params[:Body]
@@ -69,7 +69,7 @@ class TwilioController < ApplicationController
 
   # really the only thing unique here is that we'll have duration set
   def finalize_call(outbound: nil)
-    Call.where(network_id: params[:CallSid]).first_or_create!(
+    account.calls.where(network_id: params[:CallSid]).first_or_create!(
       to: strip(params[:To]),
       from: strip(params[:From]),
       outbound: outbound,
