@@ -1,0 +1,5 @@
+class AddSipPasswordToUsers < ActiveRecord::Migration[5.2]
+  def change
+    add_column :users, :sip_password, :text
+  end
+end

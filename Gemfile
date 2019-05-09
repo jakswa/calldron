@@ -63,3 +63,5 @@ gem 'devise'
 gem 'twilio-ruby', '~> 5.19.0'
 gem 'builder'
 gem 'dotenv-rails', groups: %i[development test]
+
+gem "haikunator", "~> 1.1"

@@ -107,7 +107,11 @@ class TwilioController < ApplicationController
   end
 
   def user
-    @user ||= User.first
+    @user ||= account.users.first!
+  end
+
+  def account
+    @account ||= Account.find_by(twilio_sid: params.require(:AccountSid))
   end
 
   def xml
