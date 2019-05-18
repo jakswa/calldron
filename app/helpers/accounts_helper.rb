@@ -12,12 +12,16 @@ module AccountsHelper
     false
   end
 
+  def app_name_for_sid(twiml_sid)
+    twiml_apps.find { |twiml| twiml.sid == twiml_sid }&.friendly_name
+  end
+
   def twiml_apps
-    @account.twilio_api.applications.list
+    @twiml_apps ||= @account.twilio_api.applications.list
   end
 
   def numbers
-    @account.twilio_api.incoming_phone_numbers.list
+    @numbers ||= @account.twilio_api.incoming_phone_numbers.list
   end
 
   def sip_addresses

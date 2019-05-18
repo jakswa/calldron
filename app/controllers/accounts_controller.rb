@@ -20,7 +20,8 @@ class AccountsController < ApplicationController
   def account_params
     params.require(:account).permit(
       :twilio_token, :twilio_sid,
-      whitelist: []
+      :forward_all_until,
+      whitelist: [],
     )
   end
 end

@@ -5,6 +5,22 @@
   <%= f.label :twilio_sid %> <%= f.text_field :twilio_sid %>
   <%= f.label :twilio_token %> <%= f.text_field :twilio_token %>
 
+  <h3>Temporary Pass</h3>
+  <p>You can temporarily allow all calls to your phone.</p>
+  <% if @account.forward_all_until %>
+    <p>You are letting all traffic through until
+      <%= @account.forward_all_until.iso8601 %>
+    </p>
+  <% end %>
+  <%= f.radio_button :forward_all_until, nil %>
+  <%= f.label :clear, "block normally" %>
+  <%= f.radio_button :forward_all_until, 30.minutes.from_now %>
+  <%= f.label :forward_30min, "30 minutes" %>
+  <%= f.radio_button :forward_all_until, 180.minutes.from_now %>
+  <%= f.label :forward_3hrs, "3 hours" %>
+  <%= f.radio_button :forward_all_until, 600.minutes.from_now %>
+  <%= f.label :forward_10hrs, "10 hours" %>
+
   <h3>Whitelist:</h3>
   <input-list
     input-name="account[whitelist][]"

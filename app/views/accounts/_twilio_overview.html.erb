@@ -3,7 +3,7 @@
   <% numbers.each do |number| %>
     <li>
       <%= number.phone_number %>
-      <%= number.voice_application_sid %>
+      <%= app_name_for_sid(number.voice_application_sid) %>
     </li>
   <% end %>
 </ul>
