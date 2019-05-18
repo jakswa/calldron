@@ -15,6 +15,6 @@ Rails.application.routes.draw do
   devise_for :users
   post 'message/:network_id/reply', to: 'messages#reply', as: 'message_reply'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root to: 'robots#health_check'
+  root to: 'welcome#index'
   get 'robots/health_check'
 end
